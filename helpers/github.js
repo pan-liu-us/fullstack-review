@@ -1,20 +1,29 @@
 const axios = require('axios');
-const config = require('../config.js');
+// const request = require('request');
+const config = process.env.GIT_TOKEN || require('../config.js').TOKEN;
 
-let getReposByUsername = (/* TODO */) => {
-  // TODO - Use the axios module to request repos for a specific
-  // user from the github API
+// axios.defaults.headers.common["Authorization"] =`token ${config}`
 
-  // The options object has been provided to help you out, 
-  // but you'll have to fill in the URL
+let getReposByUsername = (username) => {
+  // Use the axios module to request repos for a specific user from the github API
   let options = {
-    url: 'FILL ME IN',
+    url: `https://api.github.com/users/${username}/repos`,
     headers: {
       'User-Agent': 'request',
-      'Authorization': `token ${config.TOKEN}`
+      'Authorization': `token ${config}`
     }
   };
 
+  return axios.get(options.url, options.header);
+
+  // axios.get(options.url, options.headers)
+  //      .then(response => {
+  //       console.log('Github Response Here: ', response.data);
+  //       return response.data;
+  //     })
 }
 
-module.exports.getReposByUsername = getReposByUsername;
+// Test if API works:
+// getReposByUsername('octocat')
+
+module.exports = getReposByUsername;
